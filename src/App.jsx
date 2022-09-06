@@ -2,7 +2,9 @@
 import { useState, useEffect } from 'react'
 
 function App() {
-  const [state , setState] = useState('')
+  const [country , setCountry] = useState('')
+  const [iso , setIso] = useState('')
+  const [detail, setDetail] = useState('')
 
   useEffect(() => {
     const options = {
@@ -17,8 +19,9 @@ function App() {
       .then(response => response.json())
       .then((data) => {
         console.log(data)
-      setState(data.data[0].region.name)
-      setState(data.data[0].region.iso)
+      setCountry(data.data[0].region.name)
+      setIso(data.data[0].region.iso)
+      setDetail({data})
       },[])
       // .catch(err => console.error(err));
 
@@ -37,7 +40,8 @@ function App() {
      })
 
   
-    console.log(state)
+    console.log(country)
+    console.log(detail)
 
       return (
       <div> 
@@ -46,8 +50,13 @@ function App() {
           <Route /> */}
        <form>
        <input placeholder='input'></input>
-       <button>{state}</button>
+       <button>{country}</button>
        </form>
+       <ol>
+          <li>{country} - {iso}</li>
+          {/* <li>{detail}</li> */}
+
+       </ol>
         {/* </Routes>
         </BrowserRouter> */}
       </div>
