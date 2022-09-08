@@ -2,6 +2,12 @@
 import { useState, useEffect } from 'react'
 import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+
+
 
  
 function App() {
@@ -9,8 +15,9 @@ function App() {
   const [iso , setIso] = useState('')
   const [date, setDate] = useState('')
   const [active, setActive] = useState('')
-  const [title, setTitle] = useState(" ");
+  const [title, setTitle] = useState([]);
   const [fruit, setFruit] = useState();
+  const [arr, setArr]  = useState([])
 
 
 
@@ -27,18 +34,25 @@ function App() {
       .then(response => response.json())
       .then((data) => {
       
-        console.log(data)
+        // console.log(data.data)
 
       setCountry(data.data[fruit].region.name)
       setIso(data.data[fruit].region.iso)
-      setDate(data.data[title].date)
-      setActive(data.data[title].active)
-
+      setDate(data.data[fruit].date)
+      setActive(data.data[fruit].active)
+      
+      const datas = data.data;
+      // console.log(datas);
+      const arrResult = [];
+      datas.forEach(function(value, index) {
+      arrResult[index] = value;
+      setTitle(JSON.stringify(arrResult)
+      )});
+   
     },[])
      })
     
-    // console.log(data.data[0].region.name)
-    // setSat(sat.data)
+    console.log(title)
     
   
     const handleSelect=(e)=>{
@@ -48,63 +62,45 @@ function App() {
 
     const handleClick = () => {
       console.log("Click");
-      console.log(title);
+      // console.log(title);
     }
   
     const handleChange = (event) => {
       console.log('change');
-      console.log("event",setTitle(event.target.value));
+      console.log("event",setFruit(event.target.value));
     }
 
 
       return (
       <div> 
-        {/* {sat} */}
-        <h1>{title}</h1>
+        <h1>{JSON.stringify(title)}</h1>
       <input placeholder="input" onChange={handleChange} />
-           {/* <input
-        placeholder="Method A"
-        onBlur={handleChange}
-        defaultValue={title}
-      /> */}
+
+      <Button variant="dark" size='6em' onClick={handleClick}>Dark</Button> 
+
       <button onClick={handleClick}>Click</button>
       <div>
         {date}: {country} - {iso}
         </div>
-      <li>Active Case: {active}</li>
+      <li>Active Case: {active} + {title}</li>
 
-      {/* <div>
-      <Dropdown>
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
-        Dropdown Button
-      </Dropdown.Toggle>
-
-      <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">0</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-      </div>
-  */}
     <div>
       <select id="fruits" value={fruit} 
               onChange={(e) => setFruit(e.target.value)}>
-        <option value="0">AFG</option>
-        <option value="2">Pear</option>
-        <option value="3">Pineapple</option>
+        {/* {data.data.map((e)=> {
+          <option value={e}>{e.name}</option>
+        })} */}
+        <option >Select a Country</option>
+        <option value="0">Afghanistan</option>
+        <option value="1">Albania</option>
+        <option value="2"></option>
+        <option value="3"></option>
+
       </select>
-      <h1>Selected Fruit: {fruit}</h1>
+      <h4>Selected: {fruit}</h4>
     </div>
       </div>
   )
 }
 
 export default App
-
-// {
-//   data: {
-//     data [0]: region,
-
-//   }
-// }
